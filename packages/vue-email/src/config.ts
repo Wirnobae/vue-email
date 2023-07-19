@@ -1,4 +1,4 @@
-import { deepmerge } from './utils/deepmerge'
+import { deepmerge } from './utils'
 import type { Options } from './types'
 
 /**
