@@ -1,6 +1,15 @@
 export interface Options {
   dir: string;
   verbose?: boolean;
+  input?: {
+    templates?: {
+      /**
+       * Templates directory
+       * @default {dir}/templates
+       */
+      dir?: string;
+    };
+  };
   output?: {
     /**
      * Output directory
@@ -22,3 +31,5 @@ export interface Options {
 export interface RenderOptions {
   props?: Record<string, unknown>;
 }
+
+export type DeepRequired<T> = Required<{ [P in keyof T]: DeepRequired<T[P]> }>;
