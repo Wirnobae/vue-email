@@ -1,43 +1,12 @@
 import { createSSRApp, type Component, createApp, h } from 'vue'
 import { renderToString } from 'vue/server-renderer'
+import { transpile } from 'typescript'
 import { parse } from 'vue/compiler-sfc'
-import * as file from 'fs'
 import { createInitConfig } from './config'
+import { normalize} from 'path'
+import { getFilesRecusively, readFile, writeFile } from './utils'
+
 import type { DeepRequired, Options, RenderOptions } from './types'
-import { readdirSync, statSync } from 'fs'
-import { join, normalize, sep } from 'path'
-
-const isDirectory = (path: string): boolean => statSync(path).isDirectory()
-const isFile = (path: string): boolean => statSync(path).isFile()
-
-const getFiles = (path: string): string[] =>
-  readdirSync(path)
-    .map((name) => join(path, name))
-    .filter(isFile)
-
-const getDirectories = (path: string): string[] =>
-  readdirSync(path)
-    .map((name) => join(path, name))
-    .filter(isDirectory)
-
-const getFilesRecusively = (path: string): string[] => {
-  const dirs = getDirectories(path)
-  const files = dirs
-    .map((dir) => getFilesRecusively(dir))
-    .reduce((a, b) => a.concat(b), [])
-
-  return files.concat(getFiles(path))
-}
-
-const readFile = (path: string) => file.readFileSync(path, 'utf8').toString()
-
-const writeFile = (path: string, data: string | NodeJS.ArrayBufferView): void => {
-  file.mkdirSync(path.substring(0, path.lastIndexOf(sep)), {
-    recursive: true,
-  })
-
-  return file.writeFileSync(path, data)
-}
 
 const convertSFC = (path: string): string => {
   const COMPONENT_START = 'export default defineComponent({'
@@ -48,8 +17,6 @@ const convertSFC = (path: string): string => {
   if (!parsed.descriptor) {
     throw new Error('An error occurred while parsing component')
   }
-
-  console.log(parsed)
 
   const { template: t } = parsed.descriptor
   let template = t?.content
@@ -90,9 +57,7 @@ const convertSFC = (path: string): string => {
     b +
     script.substring(position)
 
-  component = component.replace(new RegExp('.vue\'', 'g'), '\'')
-
-  console.log(component)
+  component = transpile(component);
 
   return component
 }

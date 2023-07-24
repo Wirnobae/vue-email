@@ -27,9 +27,10 @@
     "release": "pnpm -C packages/vue-email run release"
   },
   "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.3",
     "eslint": "^8.45.0",
     "pathe": "^1.1.1",
-    "@vitejs/plugin-vue": "^4.2.3"
+    "typescript": "^5.1.6"
   },
   "volta": {
     "node": "20.4.0"
