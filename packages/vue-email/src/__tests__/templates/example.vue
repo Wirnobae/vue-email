@@ -1,13 +1,10 @@
 <script>
 import { defineComponent } from 'vue';
-import ComponentSetup from './setup'
 
 export default defineComponent({
-  components: {
-    ComponentSetup,
-  },
   props: {
     show: Boolean,
+    name: String,
   },
   methods: {
     do() {

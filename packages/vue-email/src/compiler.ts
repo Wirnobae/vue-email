@@ -1,4 +1,4 @@
-import { createSSRApp, type Component, createApp, h } from 'vue'
+import { createSSRApp, type Component} from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { transpile } from 'typescript'
 import { parse } from 'vue/compiler-sfc'
@@ -81,11 +81,14 @@ const render = async (
   options?: RenderOptions,
   config?: Options,
 ): Promise<string> => {
-  // const component: Component = (
-  //   await require(`${config?.dir}/${name}.vue`)
-  // ).default
+  const component: Component = (
+    await import(`${config?.dir}/.vuemail/${name}`)
+  ).default
 
-  return Promise.resolve('')
+  const app = createSSRApp(component, options?.props);
+  let content = await renderToString(app)
+
+  return content;
 }
 
 export const defineConfig = (config: DeepRequired<Options>) => {
