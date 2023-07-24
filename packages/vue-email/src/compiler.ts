@@ -31,7 +31,7 @@ const convertSFC = (path: string): string => {
     .replace(/\s\s+/gi, ' ')
 
   const x = parsed.descriptor.styles
-    .map((s) => s.content)
+    .map(s => s.content)
     .join('\n\n')
     .replace(/[\n\r]/gi, '')
     .replace(/"/gi, '\\"')
@@ -86,7 +86,7 @@ const render = async (
   ).default
 
   const app = createSSRApp(component, options?.props);
-  let content = await renderToString(app)
+  const content = await renderToString(app)
 
   return content;
 }

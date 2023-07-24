@@ -34,7 +34,7 @@ export function validateConfig(config: Options): void {
   console.log('Validating configuration...')
 
   const required: (keyof Options)[] = ['dir']
-  const missing = required.filter((r) => !config[r])
+  const missing = required.filter(r => !config[r])
 
   if (missing.length) {
     throw new Error('The following configuration options are missing: ' + missing.join(', '))

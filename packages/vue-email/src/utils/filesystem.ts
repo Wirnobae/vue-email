@@ -6,18 +6,18 @@ export const isFile = (path: string): boolean => fs.statSync(path).isFile()
 
 export const getFiles = (path: string): string[] =>
   fs.readdirSync(path)
-    .map((name) => $path.join(path, name))
+    .map(name => $path.join(path, name))
     .filter(isFile)
 
 export const getDirectories = (path: string): string[] =>
   fs.readdirSync(path)
-    .map((name) => $path.join(path, name))
+    .map(name => $path.join(path, name))
     .filter(isDirectory)
 
 export const getFilesRecusively = (path: string): string[] => {
   const dirs = getDirectories(path)
   const files = dirs
-    .map((dir) => getFilesRecusively(dir))
+    .map(dir => getFilesRecusively(dir))
     .reduce((a, b) => a.concat(b), [])
 
   return files.concat(getFiles(path))
