@@ -67,9 +67,13 @@ const compileTemplate = (path: string, config: Options): void => {
   const component = convertSFC($path)
   const normalizedDir = normalize(config?.input?.templates?.dir ?? '')
 
-  const name = path.substring(
+  let name = path.substring(
     path.indexOf(normalizedDir) + normalizedDir.length + 1,
   )
+
+  if (name.includes('.vuemail/')) {
+    name = name.split('/')[1]
+  }
 
   const finalPath = normalize(config?.output?.dir + '/' + name.replace('.vue', '.js'))
 
